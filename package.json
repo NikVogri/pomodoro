@@ -12,6 +12,7 @@
 		"lint:fix": "eslint \"./**/*.{ts,tsx}\" --fix"
 	},
 	"dependencies": {
+		"@react-native-community/slider": "^4.2.4",
 		"@react-navigation/native": "^6.0.10",
 		"@react-navigation/native-stack": "^6.6.2",
 		"expo": "~45.0.0",

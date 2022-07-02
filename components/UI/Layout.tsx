@@ -11,6 +11,7 @@ function Layout({ children }: LayoutProps) {
 const styles = StyleSheet.create({
 	layout: {
 		flex: 1,
+		justifyContent: "center",
 		paddingVertical: 40,
 		paddingHorizontal: 20,
 	},
