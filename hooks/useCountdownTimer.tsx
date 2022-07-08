@@ -1,21 +1,34 @@
+import { INTERVAL_PERIOD_IN_SECONDS } from "../constants";
 import { useEffect, useState } from "react";
 
-const INTERVAL_PERIOD = 100; // 1 second
-
 export const useCountdownTimer = (timeInSecs: number) => {
-	const [timeLeftInSeconds, setTimeLeftInSeconds] = useState<number | null>(null);
+	const [timerActive, setTimeActive] = useState<boolean>(false);
+	const [timeLeftInSeconds, setTimeLeftInSeconds] = useState<number>(-1);
 
 	useEffect(() => {
 		setTimeLeftInSeconds(timeInSecs);
 	}, []);
 
+	const handleStartTimer = () => {
+		setTimeActive(true);
+	};
+
+	const handleStopTimer = () => {
+		setTimeActive(false);
+		setTimeLeftInSeconds(timeInSecs);
+	};
+
 	useEffect(() => {
-		const interval = setInterval(() => {
-			setTimeLeftInSeconds((oldTimeLeftInSeconds) => oldTimeLeftInSeconds && oldTimeLeftInSeconds - 1);
-		}, INTERVAL_PERIOD);
+		let interval: NodeJS.Timer;
+
+		if (timerActive) {
+			interval = setInterval(() => {
+				setTimeLeftInSeconds((oldTimeLeftInSeconds) => oldTimeLeftInSeconds && oldTimeLeftInSeconds - 1);
+			}, INTERVAL_PERIOD_IN_SECONDS);
+		}
 
 		return () => clearInterval(interval);
-	}, []);
+	}, [timerActive]);
 
-	return { timeLeftInSeconds } as { timeLeftInSeconds: number };
+	return { timerActive, timeLeftInSeconds, startTimer: handleStartTimer, stopTimer: handleStopTimer };
 };

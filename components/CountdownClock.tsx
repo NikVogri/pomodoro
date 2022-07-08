@@ -5,17 +5,21 @@ import { secondsHHMMSS } from "../util/secondsHHMMSS";
 
 interface CountdownClockProps {
 	time: number;
-	onTimerFinish: () => void;
+	onCountdownFinish: () => void;
 }
 
-function CountdownClock({ time, onTimerFinish }: CountdownClockProps) {
-	const { timeLeftInSeconds } = useCountdownTimer(time);
+function CountdownClock({ time, onCountdownFinish }: CountdownClockProps) {
+	const { timeLeftInSeconds, startTimer } = useCountdownTimer(time);
+
+	useEffect(() => {
+		startTimer();
+	}, []);
 
 	useEffect(() => {
 		if (timeLeftInSeconds === 0) {
-			onTimerFinish();
+			onCountdownFinish();
 		}
-	}, [timeLeftInSeconds, onTimerFinish]);
+	}, [timeLeftInSeconds, onCountdownFinish]);
 
 	return (
 		<View style={styles.container}>
