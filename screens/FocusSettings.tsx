@@ -1,10 +1,6 @@
+import { ScreenProps } from "./models";
 import { useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
-
-import ConfigureTimeSlider from "../components/ConfigureTimeSlider";
-import RepeatCounter from "../components/RepeatCounter";
-import Button from "../components/UI/Button";
-import Layout from "../components/UI/Layout";
 import {
 	DEFAULT_BREAK_LENGTH_IN_MINUTES,
 	DEFAULT_FOCUS_LENGTH_IN_MINUTES,
@@ -17,7 +13,12 @@ import {
 	MIN_REPEAT_COUNT,
 } from "../constants";
 
-function FocusSettings() {
+import ConfigureTimeSlider from "../components/ConfigureTimeSlider";
+import RepeatCounter from "../components/RepeatCounter";
+import Button from "../components/UI/Button";
+import Layout from "../components/UI/Layout";
+
+function FocusSettings({ navigation }: ScreenProps<"FocusSettings">) {
 	const [focusLengthInMinutes, setFocusLengthInMinutes] = useState<number>(DEFAULT_FOCUS_LENGTH_IN_MINUTES);
 	const [breakLengthInMinutes, setBreakLengthInMinutes] = useState<number>(DEFAULT_BREAK_LENGTH_IN_MINUTES);
 	const [repeatCount, setRepeatCount] = useState<number>(DEFAULT_REPEAT_COUNT);
@@ -40,7 +41,13 @@ function FocusSettings() {
 	};
 
 	const handleStartSession = () => {
-		console.log("START SESSION");
+		const params = {
+			focusTimeInSecs: focusLengthInMinutes * 60,
+			breakTimeInSecs: breakLengthInMinutes * 60,
+			repeat: repeatCount,
+		};
+
+		navigation.navigate("Focus", params);
 	};
 
 	return (

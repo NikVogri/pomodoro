@@ -1,10 +1,10 @@
 import { StyleSheet, Text, View } from "react-native";
-import { MainScreenProps } from "./models";
+import { ScreenProps } from "./models";
 
 import Button from "../components/UI/Button";
 import Layout from "../components/UI/Layout";
 
-function MainScreen({ navigation }: MainScreenProps) {
+function MainScreen({ navigation }: ScreenProps<"Main">) {
 	const startFocusHandler = () => {
 		navigation.navigate("FocusSettings");
 	};
@@ -18,7 +18,7 @@ function MainScreen({ navigation }: MainScreenProps) {
 			<View>
 				<Text style={styles.title}>Pomodoro</Text>
 				<Button onPress={startFocusHandler}>Focus Now</Button>
-				<Button onPress={showPastFocusHandler}>Past Focus</Button>
+				<Button onPress={showPastFocusHandler}>History</Button>
 			</View>
 		</Layout>
 	);
@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
 		fontSize: 56,
 		fontWeight: "bold",
 		textAlign: "center",
-		marginBottom: 50
+		marginBottom: 50,
 	},
 });
 
