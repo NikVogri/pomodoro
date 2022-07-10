@@ -1,6 +1,8 @@
 import { StyleSheet, Text, View } from "react-native";
 import { useState } from "react";
 import { ScreenProps } from "./models";
+import { useFinishedStepNotification } from "../hooks/useFinishedStepNotification";
+import { useAppStatus } from "../hooks/useAppStatus";
 
 import CountdownClock from "../components/CountdownClock";
 import Layout from "../components/UI/Layout";
@@ -11,6 +13,9 @@ function Break({ navigation, route }: ScreenProps<"Break">) {
 	const [continueSessionAvailable, setContinueSessionAvailable] = useState<boolean>(false);
 	const { focusTimeInSecs, breakTimeInSecs, repeat } = route.params;
 
+	const { isActive: appIsActive } = useAppStatus();
+	const { sendNotification } = useFinishedStepNotification("timeToFocus");
+
 	const handleContinueSession = () => {
 		const params = { focusTimeInSecs, breakTimeInSecs, repeat: repeat - 1 };
 		navigation.replace("Focus", params);
@@ -18,6 +23,10 @@ function Break({ navigation, route }: ScreenProps<"Break">) {
 
 	const handleCountdownFinish = () => {
 		setContinueSessionAvailable(true);
+
+		if (!appIsActive) {
+			sendNotification();
+		}
 	};
 
 	const handleAutoCancelSession = () => {

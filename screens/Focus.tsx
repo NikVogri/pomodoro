@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { ScreenProps } from "./models";
+import { useAppStatus } from "../hooks/useAppStatus";
+import { useFinishedStepNotification } from "../hooks/useFinishedStepNotification";
 
 import Layout from "../components/UI/Layout";
 import Button from "../components/UI/Button";
@@ -10,16 +12,22 @@ import IdleCheck from "../components/IdleCheck";
 function Focus({ navigation, route }: ScreenProps<"Focus">) {
 	const [breakAvailable, setBreakAvailable] = useState<boolean>(false);
 	const { focusTimeInSecs, breakTimeInSecs, repeat } = route.params;
+	const { isActive: appIsActive } = useAppStatus();
+	const { sendNotification } = useFinishedStepNotification("timeToTakeABreak");
 
-	const handleTimerFinish = () => {
+	const handleTimerFinish = async () => {
 		if (repeat === 0) {
 			navigation.replace("Completed");
-		} else {
+		} else if (!breakAvailable) {
 			setBreakAvailable(true);
+
+			if (!appIsActive) {
+				await sendNotification();
+			}
 		}
 	};
 
-	const handleCancelSession = () => {
+	const handleCancelSession = async () => {
 		const params = { reason: "You cancelled the session" };
 		navigation.replace("CancelledSession", params);
 	};
