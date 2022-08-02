@@ -23,32 +23,6 @@ class LocalNotificationsScheduler {
 		});
 	}
 
-	public async scheduleTimeToTakeABreakNotification(secondsUntilDispatch: number) {
-		const millis = secondsUntilDispatch * 1000;
-		const showNotificationDateInMs = Date.now() + millis;
-
-		return await this.scheduleNotification(
-			{
-				title: "Time to take a break!",
-				body: "You've been focusing for a while. Take a break!",
-			},
-			{ date: new Date(showNotificationDateInMs) }
-		);
-	}
-
-	public async scheduleTimeToFocusNotification(secondsUntilDispatch: number) {
-		const millis = secondsUntilDispatch * 1000;
-		const showNotificationDateInMs = Date.now() + millis;
-
-		return await this.scheduleNotification(
-			{
-				title: "Time to focus!",
-				body: "You've been taking a break for a while. It's time to focus!",
-			},
-			{ date: new Date(showNotificationDateInMs) }
-		);
-	}
-
 	async cancelScheduledNotification(id: string) {
 		await cancelScheduledNotificationAsync(id);
 	}
