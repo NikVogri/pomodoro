@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View } from "react-native";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { ScreenProps } from "./models";
 import { useFinishedStepNotification } from "../hooks/useFinishedStepNotification";
 import { useAppStatus } from "../hooks/useAppStatus";
@@ -21,13 +21,15 @@ function Break({ navigation, route }: ScreenProps<"Break">) {
 		navigation.replace("Focus", params);
 	};
 
-	const handleCountdownFinish = () => {
-		setContinueSessionAvailable(true);
+	const handleCountdownFinish = useCallback(async () => {
+		if (!continueSessionAvailable) {
+			setContinueSessionAvailable(true);
 
-		if (!appIsActive) {
-			sendNotification();
+			if (!appIsActive) {
+				await sendNotification();
+			}
 		}
-	};
+	}, [appIsActive, continueSessionAvailable, setContinueSessionAvailable, sendNotification]);
 
 	const handleAutoCancelSession = () => {
 		const params = { reason: "You were idle for too long" };

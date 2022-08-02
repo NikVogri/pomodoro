@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { useCountdownTimer } from "../hooks/useCountdownTimer";
 import { secondsHHMMSS } from "../util/secondsHHMMSS";
@@ -9,6 +9,7 @@ interface CountdownClockProps {
 }
 
 function CountdownClock({ time, onCountdownFinish }: CountdownClockProps) {
+	const [isFinished, setIsFinished] = useState<boolean>(false);
 	const { timeLeftInSeconds, startTimer } = useCountdownTimer(time);
 
 	useEffect(() => {
@@ -17,9 +18,15 @@ function CountdownClock({ time, onCountdownFinish }: CountdownClockProps) {
 
 	useEffect(() => {
 		if (timeLeftInSeconds === 0) {
+			setIsFinished(true);
+		}
+	}, [timeLeftInSeconds, setIsFinished]);
+
+	useEffect(() => {
+		if (isFinished) {
 			onCountdownFinish();
 		}
-	}, [timeLeftInSeconds, onCountdownFinish]);
+	}, [isFinished, onCountdownFinish]);
 
 	return (
 		<View style={styles.container}>

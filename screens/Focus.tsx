@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { ScreenProps } from "./models";
 import { useAppStatus } from "../hooks/useAppStatus";
@@ -15,7 +15,7 @@ function Focus({ navigation, route }: ScreenProps<"Focus">) {
 	const { isActive: appIsActive } = useAppStatus();
 	const { sendNotification } = useFinishedStepNotification("timeToTakeABreak");
 
-	const handleTimerFinish = async () => {
+	const handleTimerFinish = useCallback(async () => {
 		if (repeat === 0) {
 			navigation.replace("Completed");
 		} else if (!breakAvailable) {
@@ -25,7 +25,7 @@ function Focus({ navigation, route }: ScreenProps<"Focus">) {
 				await sendNotification();
 			}
 		}
-	};
+	}, [repeat, breakAvailable, setBreakAvailable, sendNotification]);
 
 	const handleCancelSession = async () => {
 		const params = { reason: "You cancelled the session" };
