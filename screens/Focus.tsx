@@ -3,6 +3,7 @@ import { StyleSheet, Text, View } from "react-native";
 import { ScreenProps } from "./models";
 import { useAppStatus } from "../hooks/useAppStatus";
 import { useFinishedStepNotification } from "../hooks/useFinishedStepNotification";
+import { focusHistory } from "../services/local-storage/FocusHistory";
 
 import Layout from "../components/UI/Layout";
 import Button from "../components/UI/Button";
@@ -11,12 +12,13 @@ import IdleCheck from "../components/IdleCheck";
 
 function Focus({ navigation, route }: ScreenProps<"Focus">) {
 	const [breakAvailable, setBreakAvailable] = useState<boolean>(false);
-	const { focusTimeInSecs, breakTimeInSecs, repeat } = route.params;
+	const { focusTimeInSecs, repeat } = route.params;
 	const { isActive: appIsActive } = useAppStatus();
 	const { sendNotification } = useFinishedStepNotification("timeToTakeABreak");
 
 	const handleTimerFinish = useCallback(async () => {
 		if (repeat === 0) {
+			focusHistory.markCompleted(route.params.id);
 			navigation.replace("Completed");
 		} else if (!breakAvailable) {
 			setBreakAvailable(true);
@@ -38,8 +40,7 @@ function Focus({ navigation, route }: ScreenProps<"Focus">) {
 	};
 
 	const handleTakeABreak = () => {
-		const params = { focusTimeInSecs, breakTimeInSecs, repeat };
-		navigation.replace("Break", params);
+		navigation.replace("Break", route.params);
 	};
 
 	return (

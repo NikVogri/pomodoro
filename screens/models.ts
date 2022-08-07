@@ -1,12 +1,13 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { FocusConfigWithId } from "../models";
 
 export type RootStackParamList = {
 	Main: undefined;
 	FocusSettings: undefined;
 	FocusHistory: undefined;
 	Completed: undefined;
-	Focus: { focusTimeInSecs: number; breakTimeInSecs: number; repeat: number };
-	Break: { focusTimeInSecs: number; breakTimeInSecs: number; repeat: number };
+	Focus: FocusConfigWithId;
+	Break: FocusConfigWithId;
 	CancelledSession: { reason: string };
 };
 

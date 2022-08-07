@@ -11,13 +11,13 @@ import IdleCheck from "../components/IdleCheck";
 
 function Break({ navigation, route }: ScreenProps<"Break">) {
 	const [continueSessionAvailable, setContinueSessionAvailable] = useState<boolean>(false);
-	const { focusTimeInSecs, breakTimeInSecs, repeat } = route.params;
+	const { breakTimeInSecs, repeat } = route.params;
 
 	const { isActive: appIsActive } = useAppStatus();
 	const { sendNotification } = useFinishedStepNotification("timeToFocus");
 
 	const handleContinueSession = () => {
-		const params = { focusTimeInSecs, breakTimeInSecs, repeat: repeat - 1 };
+		const params = { ...route.params, repeat: repeat - 1 };
 		navigation.replace("Focus", params);
 	};
 

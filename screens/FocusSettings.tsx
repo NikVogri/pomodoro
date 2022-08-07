@@ -12,6 +12,8 @@ import {
 	MIN_FOCUS_LENGHT_IN_MINUTES,
 	MIN_REPEAT_COUNT,
 } from "../constants";
+import { focusHistory } from "../services/local-storage/FocusHistory";
+import { FocusConfig } from "../models";
 
 import ConfigureTimeSlider from "../components/ConfigureTimeSlider";
 import RepeatCounter from "../components/RepeatCounter";
@@ -40,14 +42,15 @@ function FocusSettings({ navigation }: ScreenProps<"FocusSettings">) {
 		});
 	};
 
-	const handleStartSession = () => {
-		const params = {
+	const handleStartSession = async () => {
+		const focusConfig: FocusConfig = {
 			focusTimeInSecs: focusLengthInMinutes * 60,
 			breakTimeInSecs: breakLengthInMinutes * 60,
 			repeat: repeatCount,
 		};
 
-		navigation.navigate("Focus", params);
+		const record = await focusHistory.createRecord(focusConfig);
+		navigation.navigate("Focus", { id: record.id, ...focusConfig });
 	};
 
 	return (
