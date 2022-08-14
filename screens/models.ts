@@ -9,6 +9,7 @@ export type RootStackParamList = {
 	Focus: FocusConfigWithId;
 	Break: FocusConfigWithId;
 	CancelledSession: { reason: string };
+	Debug: undefined;
 };
 
 export type ScreenProps<T extends keyof RootStackParamList> = NativeStackScreenProps<RootStackParamList, T>;

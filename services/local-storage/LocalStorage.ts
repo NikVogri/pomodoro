@@ -22,6 +22,15 @@ export class LocalStorage {
 	async getMultipleRecords(keys: string[]) {
 		return await AsyncStorage.multiGet(keys);
 	}
+
+	/**
+	 * Use only for development purposes!!!
+	 */
+	async clearAppLocalStorage() {
+		// DEBUG only
+		const keys = await this.getAllKeys();
+		await AsyncStorage.multiRemove(keys);
+	}
 }
 
 export const localStorage = new LocalStorage();

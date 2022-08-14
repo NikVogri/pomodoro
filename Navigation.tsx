@@ -1,6 +1,7 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { RootStackParamList } from "./screens/models";
+import { isDevEnv } from "./util/isDevEnv";
 
 import MainScreen from "./screens/MainScreen";
 import FocusHistory from "./screens/FocusHistory";
@@ -9,6 +10,7 @@ import Focus from "./screens/Focus";
 import Break from "./screens/Break";
 import Completed from "./screens/Completed";
 import CancelledSession from "./screens/CancelledSession";
+import Debug from "./screens/Debug";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -23,6 +25,7 @@ const Navigation = () => {
 				<Stack.Screen name="Break" component={Break} />
 				<Stack.Screen name="Completed" component={Completed} />
 				<Stack.Screen name="CancelledSession" component={CancelledSession} />
+				{isDevEnv && <Stack.Screen name="Debug" component={Debug} />}
 			</Stack.Navigator>
 		</NavigationContainer>
 	);
