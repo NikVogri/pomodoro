@@ -45,7 +45,9 @@ function Break({ navigation, route }: ScreenProps<"Break">) {
 				{continueSessionAvailable ? (
 					<IdleCheck text="Focus" onPress={handleContinueSession} onTimerFinish={handleAutoCancelSession} />
 				) : (
-					<Button onPress={handleContinueSession}>Skip</Button>
+					<Button onPress={handleContinueSession} type="flat">
+						Skip break
+					</Button>
 				)}
 			</View>
 		</Layout>

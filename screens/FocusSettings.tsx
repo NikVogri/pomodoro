@@ -53,6 +53,10 @@ function FocusSettings({ navigation }: ScreenProps<"FocusSettings">) {
 		navigation.navigate("Focus", { id: record.id, ...focusConfig });
 	};
 
+	const handleCancelSession = () => {
+		navigation.goBack();
+	};
+
 	return (
 		<Layout>
 			<View>
@@ -76,6 +80,9 @@ function FocusSettings({ navigation }: ScreenProps<"FocusSettings">) {
 
 				<RepeatCounter value={repeatCount} onCountChange={handleCountChange} />
 				<Button onPress={handleStartSession}>Start</Button>
+				<Button onPress={handleCancelSession} type="flat">
+					Cancel
+				</Button>
 			</View>
 		</Layout>
 	);

@@ -3,9 +3,10 @@ import { Animated, Easing, StyleSheet, Text, TouchableWithoutFeedback } from "re
 interface ButtonProps {
 	onPress: () => void;
 	children: string;
+	type?: "flat";
 }
 
-function Button({ onPress, children }: ButtonProps) {
+function Button({ onPress, children, type }: ButtonProps) {
 	const animatedValue = new Animated.Value(0);
 
 	const buttonScale = animatedValue.interpolate({
@@ -37,7 +38,7 @@ function Button({ onPress, children }: ButtonProps) {
 
 	return (
 		<TouchableWithoutFeedback onPressIn={onPressIn} onPressOut={onPressOut} onPress={onPress}>
-			<Animated.View style={[styles.button, animatedScaleStyle]}>
+			<Animated.View style={[styles.button, animatedScaleStyle, type === "flat" && styles.buttonFlat]}>
 				<Text style={styles.text}>{children}</Text>
 			</Animated.View>
 		</TouchableWithoutFeedback>
@@ -51,6 +52,9 @@ const styles = StyleSheet.create({
 		width: "100%",
 		marginBottom: 10,
 		borderRadius: 5,
+	},
+	buttonFlat: {
+		borderWidth: 0,
 	},
 	text: {
 		fontSize: 20,
