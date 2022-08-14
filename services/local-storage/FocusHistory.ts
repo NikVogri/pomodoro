@@ -11,8 +11,10 @@ class FocusHistory {
 		const record: FocusHistoryRecord = {
 			id: id,
 			config: { ...focusConfig },
-			finished: false,
-			created: Date.now(),
+			completed: false,
+			cancelled: false,
+			startTimestamp: Date.now(),
+			endTimestamp: null,
 		};
 
 		await this.localStorage.storeData(JSON.stringify(record), id);
@@ -42,9 +44,20 @@ class FocusHistory {
 		const record = await this.getRecord(key);
 		if (!record) return;
 
-		record.finished = true;
+		record.completed = true;
+		record.endTimestamp = Date.now();
 
-		this.localStorage.storeData(JSON.stringify(record), record.id);
+		await this.localStorage.storeData(JSON.stringify(record), record.id);
+	}
+
+	async markCancelled(key: string): Promise<void> {
+		const record = await this.getRecord(key);
+		if (!record) return;
+
+		record.cancelled = true;
+		record.endTimestamp = Date.now();
+
+		await this.localStorage.storeData(JSON.stringify(record), record.id);
 	}
 }
 

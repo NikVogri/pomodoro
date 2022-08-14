@@ -30,11 +30,13 @@ function Focus({ navigation, route }: ScreenProps<"Focus">) {
 	}, [repeat, breakAvailable, setBreakAvailable, sendNotification]);
 
 	const handleCancelSession = async () => {
+		await focusHistory.markCancelled(route.params.id);
 		const params = { reason: "You cancelled the session" };
 		navigation.replace("CancelledSession", params);
 	};
 
-	const handleAutoCancelSession = () => {
+	const handleAutoCancelSession = async () => {
+		await focusHistory.markCancelled(route.params.id);
 		const params = { reason: "You were idle for too long" };
 		navigation.replace("CancelledSession", params);
 	};

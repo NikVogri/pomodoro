@@ -1,26 +1,24 @@
-import { FlatList, StyleSheet, Text, View } from "react-native";
+import { useMemo } from "react";
+import { FlatList, StyleSheet, View } from "react-native";
 import { FocusHistoryRecord } from "../models";
+
+import FocusHistoryListItem from "./FocusHistoryListItem";
 
 interface FocusHistoryListProps {
 	focuses: FocusHistoryRecord[];
 }
 
-// TODO: add styling & display more information about the focus item
-function FocusHistoryListItem({ item }: { item: FocusHistoryRecord }) {
-	return (
-		<View style={styles.item}>
-			<Text style={styles.createdAtText}>Created: {new Date(item.created).toUTCString()}</Text>
-			<Text style={styles.completionIcon}>Finished: {item.finished ? "true" : "false"}</Text>
-		</View>
-	);
-}
-
 function FocusHistoryList({ focuses }: FocusHistoryListProps) {
+	const orderedFocusesList = useMemo(
+		() => focuses.sort((a, b) => b.startTimestamp - a.startTimestamp),
+		[focuses.length]
+	);
+
 	return (
 		<View style={styles.list}>
 			<FlatList
 				renderItem={({ item }) => <FocusHistoryListItem item={item} />}
-				data={focuses}
+				data={orderedFocusesList}
 				keyExtractor={(focusItem) => focusItem.id}
 			/>
 		</View>
@@ -30,22 +28,6 @@ function FocusHistoryList({ focuses }: FocusHistoryListProps) {
 const styles = StyleSheet.create({
 	list: {
 		height: "90%",
-	},
-	item: {
-		borderRadius: 10,
-		borderWidth: 1,
-		borderColor: "black",
-		padding: 15,
-		marginBottom: 10,
-		flexDirection: "row",
-		justifyContent: "space-between",
-		alignItems: "center",
-	},
-	createdAtText: {
-		flex: 7,
-	},
-	completionIcon: {
-		flex: 3,
 	},
 });
 

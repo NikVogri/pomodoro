@@ -7,8 +7,10 @@ export interface FocusConfig {
 export interface FocusHistoryRecord {
 	id: string;
 	config: FocusConfig;
-	created: number;
-	finished: boolean;
+	startTimestamp: number;
+	endTimestamp: null | number;
+	completed: boolean;
+	cancelled: boolean;
 }
 
 export interface FocusConfigWithId extends FocusConfig {
